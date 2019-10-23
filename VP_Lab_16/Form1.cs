@@ -14,7 +14,7 @@ namespace VP_Lab_16
     {
         DataTable dtname = new DataTable();
         DataTable dtcategory = new DataTable();
-
+       
         
         
         public Form1()
@@ -24,12 +24,15 @@ namespace VP_Lab_16
 
         private void Form1_Load(object sender, EventArgs e)
         {
+          
+            
 
             dtname.Columns.Add("Name");
             dtname.Columns.Add("Roll");
             dtname.Columns.Add("Department");
             dtname.Columns.Add("Semester");
             dtname.Columns.Add("Category");
+            
 
 
             dtname.Rows.Add("Usama", "11421", "Engg" ,"6th" ,"A");
@@ -44,25 +47,45 @@ namespace VP_Lab_16
             
          
             dataGridView1.DataSource = dtname;
+            DataGridViewButtonColumn dbtn = new DataGridViewButtonColumn();
+            dataGridView1.Columns.Add(dbtn);
+            dbtn.HeaderText = "Reamove an Item";
+            dbtn.Text = "Delete";
+            dbtn.UseColumnTextForButtonValue = true;
+
         }
 
         
 
-       /* private void button1_Click(object sender, EventArgs e)
-        {
-                   //dtname.DefaultView.RowFilter = "Name like '" + textBox1.Text + "%' and Category ='" + comboBox2 + "'";
-        }*/
-
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        
-            dtname.DefaultView.RowFilter = "Name like '" + textBox1.Text + "%' and Category ='" + comboBox2.SelectedItem + "'";
-
-        }
+       
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             dtname.DefaultView.RowFilter = "Name like '" + textBox1.Text + "%'";
+        }
+        private void deleterow()
+        {
+            var a = MessageBox.Show("Are you sure you want to delete", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (a==DialogResult.Yes)
+            {
+                dtname.Rows[dataGridView1.CurrentCell.RowIndex].Delete();
+            }
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex==5 && e.RowIndex!=-1)
+            {
+                deleterow();
+            }
+        }
+
+        private void dataGridView1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode==Keys.Delete)
+            {
+                deleterow();
+            }
         }
     }
 }
